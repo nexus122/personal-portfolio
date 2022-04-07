@@ -55,16 +55,21 @@ main{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 1em;
-    
+    margin-top: 1em;    
 }
 
 .proyect{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     border: 1px solid var(--color3);
     box-shadow: 5px 5px 5px var(--color3);
     padding: 1em;
-    width: 45%;
+    width: 100%;
     transition: all 0.5s;
+    text-align: center;
 }
 
 .proyect:hover{
@@ -93,6 +98,27 @@ a{
 }
 
 .buttons a{
-    margin-left: 1em;
-    margin-right: 1em;
+    margin: 1em;    
+}
+
+/* Barra Sticky de filtros y botones */
+nav.sticky {
+    position: sticky;
+    top: 0;
+    background: var(--card-background-color);
+    padding: 1em;
+    width: 100%;
+    border-radius: 1em;
+    box-sizing: border-box;
+    z-index: 1;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+/* En pantallas grandes poner dos columnas */
+@media (min-width: 900px){
+    .proyect{
+        width: 45%;
+        text-align: left;
+    }
 }
