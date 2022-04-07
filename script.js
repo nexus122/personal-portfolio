@@ -3,8 +3,6 @@ Vue.createApp({
         return {
             // Config
             userName: 'nexus122', // Cambiame y la pagina cambiara entera            
-            homepageProjects: false,
-            btnText: 'Solo proyectos con demo',
             // Data
             githubRepos: [],
             userInfo: []
@@ -22,7 +20,7 @@ Vue.createApp({
     },
     mounted() {
         this.fetchGithubRepos();
-        this.fetchUserInfo();
+        this.fetchUserInfo();        
     },
     computed:{
         proyectosConPagina(){
