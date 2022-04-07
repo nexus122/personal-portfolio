@@ -1,0 +1,98 @@
+/* Germania One title */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+:root{
+    --title-font-family: font-family: 'Roboto', sans-serif;
+}
+/* General */
+h1,h2,h3,h4,h5,h6{
+    font-family: var(--title-font-family);
+    margin: 0;
+}
+
+article.container {
+    padding: 2em;
+}
+
+main{
+    min-height: 100vh;    
+}
+
+/* Color Themes */
+.dark{
+    --color1: #042940;
+    --color2: #005C53;
+    --color3: #9FC131;
+    --color4: #DBF227;
+    --color5: #D6D58E;
+    --white: white;
+    --black: black;
+    --transparentColor1: rgba(62,76,19,0.8);
+}
+
+/* Descripción */
+.user-info{
+    width: 50%;    
+}
+
+.description{
+    margin-top: 2em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1em;
+}
+
+.description img{
+    border-radius: 50%;
+    width: 30%;
+    box-shadow: 0px 5px 5px var(--color3);
+}
+
+/* Proyectos individuales */
+.proyects{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1em;
+    
+}
+
+.proyect{
+    border: 1px solid var(--color3);
+    box-shadow: 5px 5px 5px var(--color3);
+    padding: 1em;
+    width: 45%;
+    transition: all 0.5s;
+}
+
+.proyect:hover{
+    box-shadow: 0px 0px 0px var(--color3);
+    transform: translateY(5px);
+}
+
+/* Enlaces y botones */
+
+a{
+    text-decoration: none;
+    color: var(--color3);        
+}
+
+[role=button] {
+    background: var(--color3);
+    border: 0px;
+    color: var(--color1);
+    display: inline-block;
+    text-decoration: none;
+}
+
+[role=button]:hover {
+    background: var(--color1);
+    color: var(--color3);
+}
+
+.buttons a{
+    margin-left: 1em;
+    margin-right: 1em;
+}

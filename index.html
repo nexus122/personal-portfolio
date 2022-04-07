@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Pico CSS-->
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+    <!-- FontAwersome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="./style.css">
+
+    <title>🖥️ Juan Pablo Romero Pereira</title>
+</head>
+
+<body>
+    <main id='app' class="dark">
+        <article class="container">
+            <!-- Titulo e introducción -->
+            <h1>🤟 Hola, Soy <a :href='userInfo.html_url' target='_blank'><i class="fa-brands fa-github"></i> @{{userName}}</a> Bienvenido a mis proyectos</h1>
+
+            <!-- Descripción -->
+            <aside class='description'>
+                <img :src="userInfo.avatar_url" :alt="userInfo.login">
+                <div class='user-info'>
+                    <h2><b>{{userInfo.name}}</b></h2>                    
+                    <p>{{userInfo.bio}}</p>
+                    <a role="button" :href="userInfo.blog" target='_blank'>Ir a mi web</a>
+                </div>
+            </aside>
+
+            <!-- Lista de proyectos -->
+            <br><h1>✔️ Proyectos y ejercicios</h1><br>
+            <div class='proyects'>
+                <aside class='proyect p-1' v-for='repo in proyectosConPagina'>
+                    <h2>{{repo.name}}</h2>
+                    <small>{{repo.language}}</small>
+                    <p>{{repo.description}}</p>
+                    <div class='buttons'>
+                        <a role="button" :href="repo.html_url" target='_blank'><i class="fa-brands fa-github"></i> Ir al codigo</a>
+                        <a role="button" :href="repo.homepage" target='_blank'><i class="fa-brands fa-github"></i> Ir a la pagina</a>
+                    </div>
+
+                </aside>
+            </div>
+        </article>
+    </main>
+
+    <!-- Vue -->
+    <script src="https://unpkg.com/vue@3"></script>
+
+    <!-- Scripts -->
+    <script src="./script.js"></script>
+
+</body>
+
+</html>
