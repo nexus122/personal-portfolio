@@ -32,19 +32,38 @@
                     <p>{{userInfo.bio}}</p>
                     <a role="button" :href="userInfo.blog" target='_blank'>Ir a mi web</a>
                 </div>
-            </aside>
+            </aside>            
 
-            <!-- Lista de proyectos -->            
             <!-- Filtros y botones -->
             <nav class='sticky'>                
                 <ul>
                     <li><h1>Proyectos</h1></li>
+                    <li>
+                        <div class="Searcher">                            
+                            <input type="text" name="searcher" id="searcher" v-model="searcher" placeholder="🔎 Busca por nombre">
+                        </div>
+                    </li>
+                    <li>
+                        <button @click="dateClick()" role="button">
+                            <div class="orderBtn" v-if="orderDateAscendent">
+                                <i class="fa-solid fa-calendar"></i>
+                                <i class="fa-solid fa-arrow-up-1-9"></i>
+                            </div>
+                            <div class="orderBtn" v-if="!orderDateAscendent">
+                                <i class="fa-solid fa-calendar"></i>
+                                <i class="fa-solid fa-arrow-down-9-1"></i>                            
+                            </div>
+                        </button>
+                    </li>
                 </ul>
             </nav>
-            <div class='proyects'>
-                <aside class='proyect p-1' v-for='repo in proyectosConPagina'>
-                    <h2>{{repo.name}}</h2>
-                    <small>{{repo.language}}</small>
+
+            <!-- Lista de proyectos -->
+            <div class='proyects'>                
+                <aside class='proyect p-1' v-for='repo in proyectosFiltrados'>
+                    <h2 class="repo_title">{{repo.name.replaceAll("-"," ")}}</h2>
+                    <small><kbd>Updated {{repo.updated_at.split("T")[0]}}</small></kbd>                               
+                    <small class="topics"><span class="topic" v-if="repo.topics.length > 0" v-for="topic in repo.topics">{{topic}}</span></small>
                     <p>{{repo.description}}</p>
                     <div class='buttons'>
                         <a role="button" :href="repo.html_url" target='_blank'><i class="fa-brands fa-github"></i> Ir al
@@ -52,7 +71,6 @@
                         <a v-if='repo.homepage' role="button" :href="repo.homepage" target='_blank'><i
                                 class="fa-brands fa-github"></i> Ir a la pagina</a>
                     </div>
-
                 </aside>
             </div>
         </article>
