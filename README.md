@@ -2,14 +2,6 @@
 Portfolio Generico que depende directamente de Github, carga la información de tu usuario y los proyectos que tengas dentro.
 Puedes escoger mostrar solo los proyectos que tengan una demo a modo de filtro.
 
-- [Screen Shoot](#Screen-Shoot)
-- [¿Como Usarlo?](#¿Como-Usarlo?) 
- - [¿Como hago para que un proyecto tenga demo?](#¿Como-hago-para-que-un-proyecto-tenga-demo?)
-- [Tecnologias](#Tecnologias)
-- [Hecho](#Hecho)
-- [Por hacer](#Por-hacer)
-- [Ideas](#Ideas)
-
 ## Screen Shoot
 ![image](https://user-images.githubusercontent.com/22988550/167912033-c47315c0-1aa8-4c49-a643-07e541ac6000.png)
 
