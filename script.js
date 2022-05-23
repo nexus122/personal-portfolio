@@ -3,10 +3,10 @@ Vue.createApp({
         return {
             // Config
             userName: 'nexus122', // Cambiame y la pagina cambiara entera
-            onlyDemoProyects: true, // ¿Solo proyectos con demo?            
+            onlyDemoProyects: true, // ¿Solo proyectos con demo?
+            orderDateAscendent: true, // ¿Ordenar por fecha ascendente?
             // Filter Data
             searcher: '',
-            orderDateAscendent: true,
             // Data
             githubRepos: [],
             userInfo: []
@@ -21,7 +21,7 @@ Vue.createApp({
             let result = await fetch(`https://api.github.com/users/${this.userName}`);
             this.userInfo = await result.json();
         },
-        dateClick() {            
+        dateClick() {
             this.orderDateAscendent = !this.orderDateAscendent;
         }
     },
@@ -35,22 +35,16 @@ Vue.createApp({
 
             let filteredProyects = this.githubRepos;
 
-            // Transformar titulo
+            // Arreglar los nombres que tengan guiones
             filteredProyects = filteredProyects.map(proyect => {
-                proyect.name = proyect.name.replaceAll("-", " ");
-                proyect.name = proyect.name.replaceAll("_", " ");
-                return proyect.name;
+                if(proyect.name.includes('-')) proyect.name = proyect.name.replaceAll("-", " ");
+                if(proyect.name.includes('_')) proyect.name = proyect.name.replaceAll("_", " ");
+
+                return proyect;
             });
 
-            // Ordenamos los proyectos por fecha
-            filteredProyects = filteredProyects.sort((a, b) => {
-                if (this.orderDateAscendent) 
-                    return new Date(b.updated_at) - new Date(a.updated_at);
-                else 
-                    return new Date(a.updated_at) - new Date(b.updated_at);
-            });
+            
 
-            // Damos a elegir al usuario si quiere o no los proyectos con demo.            
             if (this.onlyDemoProyects) {
                 // Cogeremos solo los proyectos que tengan una demo definida
                 filteredProyects = this.githubRepos.filter(repo => repo.homepage);
@@ -60,7 +54,18 @@ Vue.createApp({
 
             filteredProyects = filteredProyects.filter(repo => repo.name.toLowerCase().includes(this.searcher.toLowerCase()));
 
+            // Ordenar por update date
+            if(this.orderDateAscendent) {                
+                filteredProyects = filteredProyects.sort((a, b) => {
+                    return new Date(b.updated_at) - new Date(a.updated_at);
+                });
+            }else{                
+                filteredProyects = filteredProyects.sort((a, b) => {
+                    return new Date(a.updated_at) - new Date(b.updated_at);
+                });
+            }
+
             return filteredProyects;
         },
     }
-}).mount('#app')
+}).mount('#app');
