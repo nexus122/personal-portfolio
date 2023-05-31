@@ -85,7 +85,7 @@ main{
     margin-bottom: 1em;
     display: flex;
     gap: 1em;
-    flex-wrap: wrap;
+    flex-wrap: wrap;    
 }
 .topic{
     text-decoration: underline var(--color4);
