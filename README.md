@@ -1,4 +1,4 @@
-# Githubn Auto-Portfolio
+# Github Auto-Portfolio
 Portfolio Generico que depende directamente de Github, carga la información de tu usuario y los proyectos que tengas dentro.
 Puedes escoger mostrar solo los proyectos que tengan una demo a modo de filtro.
 
