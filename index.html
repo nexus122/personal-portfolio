@@ -1,87 +1,236 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Pico CSS-->
-    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
-    <!-- FontAwersome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Estilos personalizados -->
-    <link rel="stylesheet" href="./style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio de Juan Pablo Romero Pereira, desarrollador frontend Angular">
 
-    <title>🖥️ Juan Pablo Romero Pereira</title>
+  <!-- Prevent flash of wrong theme — inline script BEFORE everything -->
+  <script>
+    (function() {
+      const saved = localStorage.getItem('portfolio-theme');
+      const preferred = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.className = preferred;
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./style.css">
+  <title>Juan Pablo Romero — Portfolio</title>
 </head>
 
 <body>
-    <main id='app' class="dark">
-        <article class="container">
-            <!-- Titulo e introducción -->
-            <h1>🤟 Hola, Soy <a :href='userInfo.html_url' target='_blank'><i class="fa-brands fa-github"></i>
-                    @{{userName}}</a> Bienvenido a mis proyectos</h1>
+  <div id="app">
 
-            <!-- Descripción -->
-            <aside class='description'>
-                <img :src="userInfo.avatar_url" :alt="userInfo.login">
-                <div class='user-info'>
-                    <h2><b>{{userInfo.name}}</b></h2>
-                    <p>{{userInfo.bio}}</p>
-                    <a role="button" :href="userInfo.blog" target='_blank'>Ir a mi web</a>
-                </div>
-            </aside>            
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-inner">
+        <!-- Avatar skeleton while loading, real image when loaded -->
+        <div class="hero-avatar">
+          <div v-if="isLoading" class="skeleton skeleton-avatar"></div>
+          <img v-else :src="userInfo.avatar_url" :alt="'Foto de perfil de ' + (userInfo.name || userInfo.login)">
+        </div>
 
-            <!-- Filtros y botones -->
-            <nav class='sticky'>                
-                <ul>
-                    <li><h1>Proyectos</h1></li>
-                    <li>
-                        <div class="Searcher">                            
-                            <input type="text" name="searcher" id="searcher" v-model="searcher" placeholder="🔎 Busca por nombre">
-                        </div>
-                    </li>
-                    <li>
-                        <button @click="dateClick()" role="button">
-                            <div class="orderBtn" v-if="orderDateAscendent">
-                                <i class="fa-solid fa-calendar"></i>
-                                <i class="fa-solid fa-arrow-up-1-9"></i>
-                            </div>
-                            <div class="orderBtn" v-if="!orderDateAscendent">
-                                <i class="fa-solid fa-calendar"></i>
-                                <i class="fa-solid fa-arrow-down-9-1"></i>                            
-                            </div>
-                        </button>
-                    </li>
-                </ul>
-            </nav>
-
-            <!-- Lista de proyectos -->
-            <div class='proyects'>                
-                <aside class='proyect p-1' v-for='repo in proyectosFiltrados'>
-                    <h2 class="repo_title">{{repo.name.replaceAll("-"," ")}}</h2>
-                    <small><kbd>Updated {{repo.updated_at.split("T")[0]}}</small></kbd>                               
-                    <small class="topics"><span class="topic" v-if="repo.topics.length > 0" v-for="topic in repo.topics">{{topic}}</span></small>
-                    <p>{{repo.description}}</p>
-                    <div class='buttons'>
-                        <a role="button" :href="repo.html_url" target='_blank'><i class="fa-brands fa-github"></i> Ir al
-                            codigo</a>
-                        <a v-if='repo.homepage' role="button" :href="repo.homepage" target='_blank'><i
-                                class="fa-brands fa-github"></i> Ir a la pagina</a>
-                    </div>
-                </aside>
+        <div class="hero-info">
+          <div v-if="isLoading">
+            <div class="skeleton skeleton-line" style="width:80px; margin-bottom:12px"></div>
+            <div class="skeleton skeleton-line" style="width:240px; height:32px; margin-bottom:12px"></div>
+            <div class="skeleton skeleton-line" style="width:320px; margin-bottom:8px"></div>
+            <div class="skeleton skeleton-line" style="width:200px"></div>
+          </div>
+          <template v-else>
+            <p class="hero-label">Desarrollador Frontend</p>
+            <h1 class="hero-name">{{ userInfo.name || userName }}</h1>
+            <p class="hero-bio">{{ userInfo.bio }}</p>
+            <div class="hero-actions">
+              <a v-if="userInfo.html_url" :href="userInfo.html_url" target="_blank" class="btn-primary">
+                <i class="fa-brands fa-github"></i> GitHub
+              </a>
+              <a v-if="userInfo.blog" :href="userInfo.blog" target="_blank" class="btn-secondary">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Web
+              </a>
             </div>
+          </template>
+        </div>
+      </div>
+    </header>
+
+    <!-- STICKY NAV -->
+    <nav class="sticky" id="main-nav">
+      <div class="nav-inner">
+        <span class="nav-title">Proyectos</span>
+
+        <label for="searcher" class="sr-only">Buscar proyecto</label>
+        <input
+          type="text"
+          class="search-input"
+          id="searcher"
+          v-model="searcher"
+          placeholder="Buscar..."
+          autocomplete="off"
+        >
+
+        <button class="icon-btn" @click="dateClick()" :aria-label="orderDateAscendent ? 'Orden: más reciente primero' : 'Orden: más antiguo primero'" :title="orderDateAscendent ? 'Más reciente' : 'Más antiguo'">
+          <i class="fa-solid fa-arrow-down-wide-short" v-if="orderDateAscendent"></i>
+          <i class="fa-solid fa-arrow-up-wide-short" v-if="!orderDateAscendent"></i>
+        </button>
+
+        <button class="icon-btn" @click="toggleTheme()" :aria-label="isDarkTheme ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'" :title="isDarkTheme ? 'Tema claro' : 'Tema oscuro'">
+          <i class="fa-solid fa-sun"  v-if="isDarkTheme"></i>
+          <i class="fa-solid fa-moon" v-if="!isDarkTheme"></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- TOPIC FILTERS (only show if there are topics) -->
+    <div class="topics-filter-bar" v-if="availableTopics.length > 0">
+      <span class="filter-label">Stack</span>
+      <span
+        v-for="topic in availableTopics"
+        :key="topic"
+        class="tag"
+        :class="{ active: selectedTopics.includes(topic) }"
+        @click="toggleTopic(topic)"
+      >{{ topic }}</span>
+    </div>
+
+    <!-- PROJECTS -->
+    <main class="projects-wrapper">
+      <p class="projects-meta" v-if="!isLoading && proyectosFiltrados.length > 0">
+        {{ proyectosFiltrados.length }} {{ proyectosFiltrados.length === 1 ? 'proyecto' : 'proyectos' }}
+        <template v-if="selectedTopics.length > 0"> · {{ selectedTopics.join(', ') }}</template>
+      </p>
+
+      <div class="proyects">
+        <!-- Loading -->
+        <div v-if="isLoading" class="loading">
+          <div class="spinner"></div>
+          Cargando proyectos...
+        </div>
+
+        <!-- Error -->
+        <div v-if="fetchError && !isLoading" class="error-state">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          {{ fetchError.message || fetchError }}
+        </div>
+
+        <!-- Cards -->
+        <article
+          class="proyect"
+          v-for="repo in proyectosFiltrados"
+          :key="repo.id"
+        >
+          <!-- Card header: title + action links -->
+          <div class="card-header">
+            <h2 class="repo_title">{{ repo.name }}</h2>
+            <div class="card-links">
+              <a :href="repo.html_url" target="_blank" class="card-icon-link" aria-label="Ver código en GitHub" title="Código">
+                <i class="fa-brands fa-github"></i>
+              </a>
+              <a v-if="repo.homepage" :href="repo.homepage" target="_blank" class="card-icon-link" aria-label="Ver demo" title="Demo">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <p class="card-description">{{ repo.description || 'Sin descripción' }}</p>
+
+          <!-- Footer: tags + date -->
+          <div class="card-footer">
+            <div class="card-tags" v-if="repo.topics && repo.topics.length > 0">
+              <span
+                class="card-tag"
+                v-for="topic in repo.topics.slice(0, 4)"
+                :key="topic"
+              >{{ topic }}</span>
+            </div>
+            <span class="card-date">
+              <i class="fa-regular fa-clock"></i>
+              {{ repo.updated_at.split('T')[0] }}
+            </span>
+          </div>
         </article>
+      </div>
     </main>
 
-    <!-- Vue -->
-    <script src="https://unpkg.com/vue@3"></script>
+  </div><!-- /#app -->
 
-    <!-- Scripts -->
-    <script src="./script.js"></script>
+  <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.prod.js"></script>
+  <script src="./script.js"></script>
 
+  <!-- Tilt + spotlight effects (runs after Vue mounts) -->
+  <script>
+    function initCardEffects() {
+      const grid = document.querySelector('.proyects');
+      if (!grid) return;
+
+      const INTENSITY = 8;
+
+      grid.addEventListener('mousemove', (e) => {
+        const card = e.target.closest('.proyect');
+        if (!card) return;
+
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
+
+        const rotX = ((y - cy) / cy) * -INTENSITY;
+        const rotY = ((x - cx) / cx) * INTENSITY;
+
+        card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-3px)`;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+
+      grid.addEventListener('mouseleave', (e) => {
+        const card = e.target.closest('.proyect');
+        if (!card) return;
+        card.style.transform = '';
+      }, true);
+
+      // Reset individual cards when mouse leaves them
+      grid.addEventListener('mouseout', (e) => {
+        if (e.target.classList.contains('proyect')) {
+          e.target.style.transform = '';
+        }
+      });
+    }
+
+    // Run once Vue has rendered cards
+    // Use MutationObserver to detect when cards appear
+    const observer = new MutationObserver(() => {
+      if (document.querySelector('.proyect')) {
+        initCardEffects();
+        observer.disconnect();
+      }
+    });
+    observer.observe(document.getElementById('app'), { childList: true, subtree: true });
+
+    // Also handle nav scroll state
+    const nav = document.getElementById('main-nav');
+    if (nav) {
+      window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 10);
+      }, { passive: true });
+    }
+
+    // Disable tilt on touch devices
+    if (window.matchMedia('(hover: none)').matches) {
+      // skip initCardEffects — it won't be called
+    }
+
+    // Respect prefers-reduced-motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.style.setProperty('--card-animation', 'none');
+    }
+  </script>
 </body>
-
 </html>
